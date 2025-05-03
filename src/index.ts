@@ -6,3 +6,10 @@ interface Tarea {
     estadoTarea: boolean
     estado: string
 }
+
+class GestorTareas {
+    almacenTareas: Tarea[]
+    constructor() {
+        this.almacenTareas = []
+    }
+}
