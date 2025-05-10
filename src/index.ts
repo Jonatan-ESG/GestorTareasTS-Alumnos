@@ -10,8 +10,10 @@ interface Tarea {
 
 class GestorTareas {
     almacenTareas: Tarea[]
-    constructor() {
+    nombre: string
+    constructor(nombre?: string) {
         this.almacenTareas = []
+        this.nombre = nombre || ''
     }
 
     agregarTarea(titulo: string, descripcion: string): void {
@@ -33,9 +35,24 @@ class GestorTareas {
         tarea.estado = 'Completada'
         this.almacenTareas[indiceTarea] = tarea
     }
+
+    listarTareas() {
+        if (this.almacenTareas.length === 0) {
+            console.log('No hay tareas registradas.')
+        } else {
+            console.log('Listado de tareas pendientes:')
+            for (let i = 0; i < this.almacenTareas.length; i++) {
+                const tarea = this.almacenTareas[i]
+                console.log(`Título: ${tarea.titulo}`)
+                console.log(`Descripción: ${tarea.descripcion}`)
+            }
+        }
+    }
 }
 
 const store = new GestorTareas()
 store.agregarTarea('Limpiar el balcon', 'Limpiar el balcon bien')
 store.completarTarea('Limpia el balcon')
 console.log(store.almacenTareas)
+
+const nuevogestor = new GestorTareas('Tareas de la oficina')
