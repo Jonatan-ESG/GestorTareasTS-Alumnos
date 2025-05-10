@@ -36,6 +36,15 @@ class GestorTareas {
         this.almacenTareas[indiceTarea] = tarea
     }
 
+    eliminarTarea(titulo: string) {
+        const nuevoArregloTareas: Tarea[] = []
+        this.almacenTareas.forEach((tarea: Tarea) => {
+            if (tarea.titulo != titulo) nuevoArregloTareas.push(tarea)
+        })
+
+        this.almacenTareas = nuevoArregloTareas
+    }
+
     listarTareas() {
         if (this.almacenTareas.length === 0) {
             console.log('No hay tareas registradas.')
