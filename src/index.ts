@@ -152,4 +152,5 @@ store.actualizarTarea('Pagar la luz', {
 })
 
 store.listarTareas()
-store.buscarTarea('Limpiar el balcon')
+const tarea = store.buscarTarea('Limpiar el balcon')
+console.log(tarea)
