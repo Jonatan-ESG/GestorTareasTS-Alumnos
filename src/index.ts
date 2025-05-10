@@ -52,7 +52,9 @@ class GestorTareas {
     contarTareasPendientes(): number {
         let tareasPendientes = 0
         this.almacenTareas.forEach((tarea: Tarea) => {
-            if (tarea.estado == 'Pendiente') tareasPendientes++
+            if (tarea.estado == 'Pendiente') {
+                tareasPendientes++
+            }
         })
         return tareasPendientes
     }
