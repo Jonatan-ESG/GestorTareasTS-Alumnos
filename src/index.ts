@@ -25,6 +25,7 @@ class GestorTareas {
             estado: 'Pendiente',
         }
         this.almacenTareas.push(nuevaTarea)
+        console.log(`La tarea ${nuevaTarea.titulo} fue agregada`)
     }
 
     completarTarea(titulo: string) {
@@ -34,6 +35,8 @@ class GestorTareas {
         tarea.completada = true
         tarea.estado = 'Completada'
         this.almacenTareas[indiceTarea] = tarea
+
+        console.log(`La tarea ${tarea.titulo} fue completada`)
     }
 
     eliminarTarea(titulo: string) {
@@ -43,17 +46,25 @@ class GestorTareas {
         })
 
         this.almacenTareas = nuevoArregloTareas
+        console.log(`La tarea ${titulo} fue eliminada`)
+    }
+
+    contarTareasPendientes(): number {
+        let tareasPendientes = 0
+        this.almacenTareas.forEach((tarea: Tarea) => {
+            if (tarea.estado == 'Pendiente') tareasPendientes++
+        })
+        return tareasPendientes
     }
 
     listarTareas() {
         if (this.almacenTareas.length === 0) {
             console.log('No hay tareas registradas.')
         } else {
-            console.log('Listado de tareas pendientes:')
+            console.log('Listado de tareas:')
             for (let i = 0; i < this.almacenTareas.length; i++) {
                 const tarea = this.almacenTareas[i]
-                console.log(`Título: ${tarea.titulo}`)
-                console.log(`Descripción: ${tarea.descripcion}`)
+                console.log(`Título: ${tarea.titulo} Descripción: ${tarea.descripcion} | ${tarea.estado}`)
             }
         }
     }
@@ -61,7 +72,20 @@ class GestorTareas {
 
 const store = new GestorTareas()
 store.agregarTarea('Limpiar el balcon', 'Limpiar el balcon bien')
-store.completarTarea('Limpia el balcon')
-console.log(store.almacenTareas)
+store.agregarTarea('Comprar víveres', 'Ir al supermercado y comprar frutas, verduras y leche')
+store.agregarTarea('Llamar al plomero', 'Agendar cita para revisar la fuga en el baño')
+store.agregarTarea('Estudiar para el examen', 'Revisar los capítulos 4 al 6 del libro de historia')
+store.agregarTarea('Sacar la basura', 'Sacar la basura reciclable y orgánica antes de las 8 PM')
+store.agregarTarea('Pagar la luz', 'Entrar al sitio web y hacer el pago antes del viernes')
+store.agregarTarea('Regar las plantas', 'Regar las plantas del balcón y del interior del departamento')
+
+store.completarTarea('Limpiar el balcon')
+store.completarTarea('Sacar la basura')
+store.completarTarea('Regar las plantas')
+
+store.eliminarTarea('Comprar víveres')
+store.listarTareas()
+const tareasPendientes = store.contarTareasPendientes()
+console.log(tareasPendientes)
 
 const nuevogestor = new GestorTareas('Tareas de la oficina')
