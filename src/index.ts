@@ -117,6 +117,15 @@ class GestorTareas {
             }
         }
     }
+    buscarTarea(tituloBuscado: string): Tarea | undefined {
+        for (let i = 0; i < this.almacenTareas.length; i++) {
+            const tarea = this.almacenTareas[i]
+            if (tarea.titulo === tituloBuscado) {
+                console.log(`Tarea encontrada`)
+                return tarea
+            }
+        }
+    }
 }
 
 const store = new GestorTareas()
@@ -143,3 +152,4 @@ store.actualizarTarea('Pagar la luz', {
 })
 
 store.listarTareas()
+store.buscarTarea('Limpiar el balcon')
