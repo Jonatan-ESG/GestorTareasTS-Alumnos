@@ -15,6 +15,14 @@ interface Tarea {
     prioridad: PrioridadTarea
 }
 
+interface UpdateTareaDTO {
+    titulo?: string
+    descripcion?: string
+    completada?: boolean
+    estado?: string
+    prioridad?: PrioridadTarea
+}
+
 class GestorTareas {
     almacenTareas: Tarea[]
     nombre: string
@@ -67,6 +75,22 @@ class GestorTareas {
         return tareasPendientes
     }
 
+    actualizarTarea(titulo: string, nuevaTarea: UpdateTareaDTO) {
+        const indiceTarea = this.almacenTareas.findIndex((tarea: Tarea) => tarea.titulo == titulo)
+        if (indiceTarea == -1) return console.log('No fue posible encontrar la tarea indicada')
+        const tarea = this.almacenTareas[indiceTarea]
+
+        tarea.titulo = nuevaTarea.titulo || tarea.titulo
+        tarea.descripcion = nuevaTarea.descripcion || tarea.descripcion
+        tarea.completada = nuevaTarea.completada || tarea.completada
+        tarea.estado = nuevaTarea.estado || tarea.estado
+        tarea.prioridad = nuevaTarea.prioridad || tarea.prioridad
+
+        this.almacenTareas[indiceTarea] = tarea
+
+        console.log(`La tarea ${tarea.titulo} fue actualizada`)
+    }
+
     listarTareas() {
         if (this.almacenTareas.length === 0) {
             console.log('No hay tareas registradas.')
@@ -98,4 +122,9 @@ store.listarTareas()
 const tareasPendientes = store.contarTareasPendientes()
 console.log(tareasPendientes)
 
-const nuevogestor = new GestorTareas('Tareas de la oficina')
+store.actualizarTarea('Pagar la luz', {
+    titulo: 'Pagar la energía eléctrica',
+    descripcion: 'Ir a la municipalidad a pagar la mensualidad de la energía y solicitar usuario web',
+})
+
+store.listarTareas()
