@@ -6,12 +6,18 @@ enum PrioridadTarea {
     BAJA = '🔵',
 }
 
+enum EstadoTarea {
+    PENDIENTE = 'Pendiente',
+    EN_PROGRESO = 'En Progreso',
+    FINALIZADA = 'Finalizada',
+}
+
 interface Tarea {
     id: number
     titulo: string
     descripcion: string
     completada: boolean
-    estado: string
+    estado: EstadoTarea
     prioridad: PrioridadTarea
 }
 
@@ -19,7 +25,7 @@ interface UpdateTareaDTO {
     titulo?: string
     descripcion?: string
     completada?: boolean
-    estado?: string
+    estado?: EstadoTarea
     prioridad?: PrioridadTarea
 }
 
@@ -37,7 +43,7 @@ class GestorTareas {
             titulo: titulo,
             descripcion: descripcion,
             completada: false,
-            estado: 'Pendiente',
+            estado: EstadoTarea.PENDIENTE,
             prioridad: prioridadTarea,
         }
         this.almacenTareas.push(nuevaTarea)
@@ -49,7 +55,7 @@ class GestorTareas {
         if (indiceTarea == -1) return console.log('No fue posible encontrar la tarea indicada')
         const tarea = this.almacenTareas[indiceTarea]
         tarea.completada = true
-        tarea.estado = 'Completada'
+        tarea.estado = EstadoTarea.FINALIZADA
         this.almacenTareas[indiceTarea] = tarea
 
         console.log(`La tarea ${tarea.titulo} fue completada`)
@@ -68,7 +74,7 @@ class GestorTareas {
     contarTareasPendientes(): number {
         let tareasPendientes = 0
         this.almacenTareas.forEach((tarea: Tarea) => {
-            if (tarea.estado == 'Pendiente') {
+            if (tarea.estado == EstadoTarea.PENDIENTE) {
                 tareasPendientes++
             }
         })
@@ -83,7 +89,16 @@ class GestorTareas {
         tarea.titulo = nuevaTarea.titulo || tarea.titulo
         tarea.descripcion = nuevaTarea.descripcion || tarea.descripcion
         tarea.completada = nuevaTarea.completada || tarea.completada
-        tarea.estado = nuevaTarea.estado || tarea.estado
+        if (tarea.estado == EstadoTarea.FINALIZADA) {
+            console.log('No se puede modificar una tarea con estatus Finalizado')
+        }
+        if (tarea.estado == EstadoTarea.EN_PROGRESO && nuevaTarea.estado == EstadoTarea.PENDIENTE) {
+            tarea.estado = nuevaTarea.estado
+        } else if (tarea.estado == EstadoTarea.EN_PROGRESO && nuevaTarea.estado == EstadoTarea.FINALIZADA) {
+            console.log('No se puede modificar una tarea a estatus Finalizado, para ellos por favor finalice la tarea')
+        } else {
+            tarea.estado = nuevaTarea.estado || tarea.estado
+        }
         tarea.prioridad = nuevaTarea.prioridad || tarea.prioridad
 
         this.almacenTareas[indiceTarea] = tarea
